@@ -11,4 +11,16 @@ function recordAudio() {
     })
 }
 
-recordAudio()
+let recording = false
+let mediaRecorder = null
+$('#record').on('click', () => {
+  if(!recording){
+    mediaRecorder = recordAudio()
+    $('#record').text('Stop')
+  } else {
+    mediaRecorder.stop()
+    $('#record').text('Record')
+  }
+
+  recording = !recording
+})

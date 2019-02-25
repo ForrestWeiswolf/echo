@@ -1,26 +1,46 @@
+let mediaRecorder = null
+let recording = false
+
 function recordAudio() {
-  return navigator.mediaDevices.getUserMedia({
+
+  mediaRecorder = navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false
     })
     .then(stream => {
+      const audioChunks = [];
       const mediaRecorder = new MediaRecorder(stream);
+
       mediaRecorder.start()
       console.log('started recording')
+      recording = true
+
+      mediaRecorder.addEventListener("dataavailable", event => {
+        audioChunks.push(event.data);
+      })
+
+      mediaRecorder.addEventListener("stop", () => {
+        const audioBlob = new Blob(audioChunks)
+        const audio = new Audio(URL.createObjectURL(audioBlob))
+        audio.play()
+      })
+
       return mediaRecorder
     })
 }
 
-let recording = false
-let mediaRecorder = null
 $('#record').on('click', () => {
-  if(!recording){
-    mediaRecorder = recordAudio()
+  if (!recording) {
+    recordAudio()
     $('#record').text('Stop')
   } else {
-    mediaRecorder.stop()
-    $('#record').text('Record')
+    console.log(mediaRecorder)
+    mediaRecorder.then(recorder => recorder.stop())
+      .then(() => {
+        $('#record').text('Record')
+        recording = false
+      })
   }
-
-  recording = !recording
 })
+
+// $('#play').on('click', () => {})

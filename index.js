@@ -1,5 +1,6 @@
 let mediaRecorder = null
 let recording = false
+let interval = null
 
 function recordAudio() {
 
@@ -42,6 +43,10 @@ function toggleRecording() {
   }
 }
 
-$('#start').on('click', toggleRecording)
+$('#start').on('click', () => {
+  interval = setInterval(() => {
+    toggleRecording()
+  }, 3000)
+})
 
 // $('#play').on('click', () => {})

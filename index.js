@@ -32,21 +32,25 @@ function recordAudio() {
 function toggleRecording() {
   if (!recording) {
     recordAudio()
-    $('#start').text('Stop')
   } else {
-    console.log(mediaRecorder)
     mediaRecorder.then(recorder => recorder.stop())
       .then(() => {
-        $('#start').text('Start')
         recording = false
       })
   }
 }
 
 $('#start').on('click', () => {
-  interval = setInterval(() => {
-    toggleRecording()
-  }, 3000)
+  if (!interval) {
+    $('#start').text('Stop')
+    interval = setInterval(() => {
+      toggleRecording()
+    }, 3000)
+  } else {
+    $('#start').text('Start')
+    clearInterval(interval)
+    interval = null
+  }
 })
 
 // $('#play').on('click', () => {})

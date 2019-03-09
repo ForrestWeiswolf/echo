@@ -12,7 +12,6 @@ function recordAudio() {
       const mediaRecorder = new MediaRecorder(stream);
 
       mediaRecorder.start()
-      console.log('started recording')
       recording = true
 
       mediaRecorder.addEventListener("dataavailable", event => {

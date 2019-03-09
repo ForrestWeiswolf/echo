@@ -28,7 +28,7 @@ function recordAudio() {
     })
 }
 
-$('#start').on('click', () => {
+function toggleRecording() {
   if (!recording) {
     recordAudio()
     $('#start').text('Stop')
@@ -40,6 +40,8 @@ $('#start').on('click', () => {
         recording = false
       })
   }
-})
+}
+
+$('#start').on('click', toggleRecording)
 
 // $('#play').on('click', () => {})

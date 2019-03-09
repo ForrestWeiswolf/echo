@@ -1,6 +1,6 @@
 let mediaRecorder = null
 let recording = false
-let interval = null
+let timeout = null
 
 function recordAudio() {
 
@@ -32,24 +32,28 @@ function recordAudio() {
 function toggleRecording() {
   if (!recording) {
     recordAudio()
+    timeout = setTimeout(() => {
+      toggleRecording()
+    }, $('input[name="Record for"]').val() * 1000)
   } else {
     mediaRecorder.then(recorder => recorder.stop())
       .then(() => {
         recording = false
+        timeout = setTimeout(() => {
+          toggleRecording()
+        }, $('input[name="Wait for"]').val() * 1000)
       })
   }
 }
 
 $('#start').on('click', () => {
-  if (!interval) {
+  if (!timeout) {
     $('#start').text('Stop')
-    interval = setInterval(() => {
-      toggleRecording()
-    }, 3000)
+    toggleRecording()
   } else {
     $('#start').text('Start')
-    clearInterval(interval)
-    interval = null
+    clearTimeout(timeout)
+    timeout = null
   }
 })
 

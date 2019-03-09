@@ -28,15 +28,15 @@ function recordAudio() {
     })
 }
 
-$('#record').on('click', () => {
+$('#start').on('click', () => {
   if (!recording) {
     recordAudio()
-    $('#record').text('Stop')
+    $('#start').text('Stop')
   } else {
     console.log(mediaRecorder)
     mediaRecorder.then(recorder => recorder.stop())
       .then(() => {
-        $('#record').text('Record')
+        $('#start').text('Start')
         recording = false
       })
   }

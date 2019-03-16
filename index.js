@@ -42,7 +42,7 @@ function toggleRecording() {
         recording = false
         timeout = setTimeout(() => {
           toggleRecording()
-        }, $('input[name="Wait for"]').val() * 1000)
+        }, ($('input[name="Record for"]').val() * 1000) + $('input[name="Wait for"]').val() * 1000)
       })
   }
 }

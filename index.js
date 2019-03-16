@@ -30,6 +30,7 @@ function recordAudio() {
 }
 
 function toggleRecording() {
+  $('#content').toggleClass('recording-active')
   if (!recording) {
     recordAudio()
     timeout = setTimeout(() => {

@@ -2,6 +2,9 @@ let mediaRecorder = null
 let recording = false
 let timeout = null
 
+let recordTime = null
+let waitTime = null
+
 function recordAudio() {
 
   mediaRecorder = navigator.mediaDevices.getUserMedia({
@@ -30,24 +33,32 @@ function recordAudio() {
 }
 
 function toggleRecording() {
-  $('#content').toggleClass('recording-active')
   if (!recording) {
     recordAudio()
+
+    $('#content').addClass('recording-active')
+
     timeout = setTimeout(() => {
       toggleRecording()
-    }, $('input[name="Record for"]').val() * 1000)
+    }, recordTime)
   } else {
     mediaRecorder.then(recorder => recorder.stop())
       .then(() => {
+        $('#content').removeClass('recording-active')
+
         recording = false
+
         timeout = setTimeout(() => {
           toggleRecording()
-        }, ($('input[name="Record for"]').val() * 1000) + $('input[name="Wait for"]').val() * 1000)
+        }, recordTime + waitTime)
       })
   }
 }
 
 $('#start').on('click', () => {
+  recordTime = $('input[name="Record for"]').val() * 1000
+  waitTime = $('input[name="Wait for"]').val() * 1000
+
   if (!timeout) {
     $('#start').text('Stop')
     toggleRecording()

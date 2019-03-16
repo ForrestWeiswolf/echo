@@ -25,6 +25,12 @@ function recordAudio() {
       mediaRecorder.addEventListener("stop", () => {
         const audioBlob = new Blob(audioChunks)
         const audio = new Audio(URL.createObjectURL(audioBlob))
+        $('#content').addClass('playing-active')
+
+        timeout = setTimeout(() => {
+          $('#content').removeClass('playing-active')
+        }, recordTime)
+
         audio.play()
       })
 
